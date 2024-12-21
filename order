@@ -1,0 +1,46 @@
+def read_cook_book(recipe):
+    cook_book = {}
+    with open(recipe, 'r', encoding='utf-8') as file:
+        while True:
+            dish_name = file.readline().strip()
+            print(repr(dish_name))
+            if not dish_name:
+                break
+            
+            ingredient_count = int(file.readline().strip())
+            ingredients = []
+            
+            for _ in range(ingredient_count):
+                ingredient_line = file.readline().strip()
+                ingredient_name, quantity, measure = ingredient_line.split(' | ')
+                ingredients.append({
+                    'ingredient_name': ingredient_name,
+                    'quantity': int(quantity),
+                    'measure': measure
+                })
+                
+            cook_book[dish_name] = ingredients
+            
+    return cook_book
+
+
+def get_shop_list_by_dishes(dishes, person_count):
+    shop_list = {}
+
+    for dish in dishes:
+        if dish in cook_book:
+            ingredients = cook_book[dish]
+            for ingredient in ingredients:
+                ingredients_name = ingredient['ingredient_name']
+                quantity = ingredient['quantity'] * person_count
+                measure = ingredient['measure']
+                
+                if ingredients_name not in shop_list:
+                    shop_list[ingredients_name] = {'measure': measure, 'quantity': quantity}
+                else:
+                    shop_list[ingredients_name]['quantity'] += quantity
+    return shop_list
+recipe = 'recipe.txt'
+cook_book = read_cook_book(recipe)
+result = get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
+print(result)

@@ -1,11 +1,16 @@
 def read_cook_book(recipe):
     cook_book = {}
     with open(recipe, 'r', encoding='utf-8') as file:
+        dish = ''
         while True:
             dish_name = file.readline().strip()
-            print(repr(dish_name))
-            if not dish_name:
+            dish_name_next = file.readline().strip()
+            if len(dish_name) == 0 and len(dish_name_next) == 0:
                 break
+            else:
+                dish += dish_name + '\n' + dish_name_next + '\n'
+            
+            print(dish)
             
             ingredient_count = int(file.readline().strip())
             ingredients = []

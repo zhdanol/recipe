@@ -1,17 +1,10 @@
 def read_cook_book(recipe):
     cook_book = {}
     with open(recipe, 'r', encoding='utf-8') as file:
-        dish = ''
         while True:
             dish_name = file.readline().strip()
-            dish_name_next = file.readline().strip()
-            if len(dish_name) == 0 and len(dish_name_next) == 0:
+            if not dish_name:
                 break
-            else:
-                dish += dish_name + '\n' + dish_name_next + '\n'
-            
-            print(dish)
-            
             ingredient_count = int(file.readline().strip())
             ingredients = []
             
@@ -31,19 +24,17 @@ def read_cook_book(recipe):
 
 def get_shop_list_by_dishes(dishes, person_count):
     shop_list = {}
-
     for dish in dishes:
         if dish in cook_book:
-            ingredients = cook_book[dish]
-            for ingredient in ingredients:
-                ingredients_name = ingredient['ingredient_name']
+            for ingredient in cook_book[dish]:
+                item = ingredient['ingredient_name']
                 quantity = ingredient['quantity'] * person_count
                 measure = ingredient['measure']
                 
-                if ingredients_name not in shop_list:
-                    shop_list[ingredients_name] = {'measure': measure, 'quantity': quantity}
+                if item not in shop_list:
+                    shop_list[item] = {'measure': measure, 'quantity': quantity}
                 else:
-                    shop_list[ingredients_name]['quantity'] += quantity
+                    shop_list[item]['quantity'] += quantity
     return shop_list
 recipe = 'recipe.txt'
 cook_book = read_cook_book(recipe)
